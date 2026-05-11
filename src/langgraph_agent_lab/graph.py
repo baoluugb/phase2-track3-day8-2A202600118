@@ -27,8 +27,6 @@ from .state import AgentState
 
 def build_graph(checkpointer: Any | None = None):
     """Build and compile the LangGraph workflow.
-
-    TODO(student): review the architecture and modify nodes/edges only with a clear reason.
     Required behaviors:
     - intake -> classify (normalization + routing)
     - classify routes to answer/tool/clarify/risky/retry
@@ -40,7 +38,8 @@ def build_graph(checkpointer: Any | None = None):
     try:
         from langgraph.graph import END, START, StateGraph
     except Exception as exc:  # pragma: no cover - helpful install error
-        raise RuntimeError("LangGraph is required. Run: pip install -e '.[dev]' or pip install langgraph") from exc
+        raise RuntimeError(
+            "LangGraph is required. Run: pip install -e '.[dev]' or pip install langgraph") from exc
 
     graph = StateGraph(AgentState)
     graph.add_node("intake", intake_node)

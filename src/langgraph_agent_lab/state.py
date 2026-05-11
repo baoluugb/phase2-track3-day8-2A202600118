@@ -34,15 +34,13 @@ class LabEvent(BaseModel):
 
 class ApprovalDecision(BaseModel):
     approved: bool = False
+    decision: str | None = None
     reviewer: str = "mock-reviewer"
     comment: str = ""
 
 
 class AgentState(TypedDict, total=False):
     """LangGraph state.
-
-    TODO(student): decide which fields should be append-only and which should be overwritten.
-    The current annotations give a safe starting point for auditability.
     """
 
     thread_id: str
@@ -52,6 +50,7 @@ class AgentState(TypedDict, total=False):
     risk_level: str
     attempt: int
     max_attempts: int
+    should_retry: bool
     final_answer: str | None
     pending_question: str | None
     proposed_action: str | None
@@ -90,6 +89,7 @@ def initial_state(scenario: Scenario) -> AgentState:
         "risk_level": "unknown",
         "attempt": 0,
         "max_attempts": scenario.max_attempts,
+        "should_retry": scenario.should_retry,
         "final_answer": None,
         "pending_question": None,
         "proposed_action": None,
